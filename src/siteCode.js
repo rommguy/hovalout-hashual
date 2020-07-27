@@ -1,5 +1,4 @@
 import { local } from 'wix-storage'
-import wixUsers from 'wix-users'
 import wixData from 'wix-data'
 import wixWindow from 'wix-window'
 import { getRandomAlpahNumericString } from 'public/utils.js'
