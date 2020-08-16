@@ -6,7 +6,7 @@ import { getRandomAlpahNumericString } from 'public/utils.js'
 const getEmptyUserOrder = userId => {
   return {
     orderItems: {},
-    email: 'rommguy@gmail.com',
+    email: '',
     userId,
     _id: userId,
   }

@@ -17,9 +17,9 @@ $w.onReady(() => {
     console.log(`item: ${JSON.stringify(itemData)}, itemID: ${itemData._id}, amount: ${itemAmount}`)
     $item('#itemCounter').value = itemAmount
   })
-  $w('#categoriesRepeater').onItemReady(($item, itemData) => {
+  $w('#categoriesRepeater').onItemReady(($item, categoryData) => {
     const currentCategory = $w('#currentCategory').getCurrentItem()
-    if (itemData.categoryId === currentCategory._id) {
+    if (categoryData._id === currentCategory._id) {
       const itemContainer = $item('#container1')
       itemContainer.background.src =
         'wix:image://v1/0548d91df03c46a6b89f02f49ae8be98.jpg/Boat%20on%20a%20Lake.jpg#originWidth=3000&originHeight=2790'

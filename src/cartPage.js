@@ -46,6 +46,12 @@ $w.onReady(async () => {
   }, {})
 
   $w('#cartRepeater').data = Object.values(itemsPerCategoryMap)
+  console.log(`Setting filter for _id to eq ${userRecord._id}`)
+  await $w('#orderConnection').setFilter(wixData.filter().eq('_id', userRecord._id))
+
+  $w('#orderConnection').onReady(async () => {
+    await $w('#orderConnection').setCurrentItemIndex(0)
+  })
 })
 
 export const backToCategories = async event => {
