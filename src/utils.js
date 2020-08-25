@@ -1,5 +1,6 @@
 import wixData from 'wix-data'
 import { local } from 'wix-storage'
+import wixLocation from 'wix-location'
 
 const SET_ITEM_AMOUNT_TYPE = 'setItemAmount'
 
@@ -46,4 +47,36 @@ export const reducer = (orderItems, action) => {
     default:
       return orderItems
   }
+}
+
+export const debounce = (func, wait) => {
+  let timer
+
+  const result = (...args) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      func(...args)
+    }, wait)
+  }
+
+  result.cancel = () => {
+    clearTimeout(timer)
+  }
+  return result
+}
+
+export const goToCategories = async () => {
+  const categories = await wixData.query('categories').find()
+  const firstCategory = categories.items[0]
+  setTimeout(async () => {
+    await $w('#orderConnection').save()
+    wixLocation.to(firstCategory['link-categories-categoryName'])
+  }, 200)
+}
+
+export const saveAndNavigate = path => {
+  setTimeout(async () => {
+    await $w('#orderConnection').save()
+    wixLocation.to(path)
+  }, 200)
 }

@@ -1,6 +1,7 @@
-import { getUserRecord } from 'public/utils.js'
+import { getUserRecord, debounce, goToCategories, saveAndNavigate } from 'public/utils.js'
 import wixData from 'wix-data'
 import wixLocation from 'wix-location'
+let pageReady = false
 
 $w.onReady(async () => {
   const userRecord = await getUserRecord()
@@ -52,10 +53,15 @@ $w.onReady(async () => {
   $w('#orderConnection').onReady(async () => {
     await $w('#orderConnection').setCurrentItemIndex(0)
   })
+  pageReady = true
 })
 
-export const backToCategories = async event => {
-  const categories = await wixData.query('categories').find()
-  const firstCategory = categories.items[0]
-  wixLocation.to(firstCategory['link-categories-categoryName'])
+export const backToCategories = goToCategories
+
+export const goToPersonalInfo = () => {
+  saveAndNavigate('/personal-info')
+}
+
+export const goToAddress = () => {
+  saveAndNavigate('/personal-info')
 }
