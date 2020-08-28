@@ -63,5 +63,5 @@ export const goToPersonalInfo = () => {
 }
 
 export const goToAddress = () => {
-  saveAndNavigate('/personal-info')
+  saveAndNavigate('/address')
 }

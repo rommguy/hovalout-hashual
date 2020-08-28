@@ -56,6 +56,11 @@ export function onCategoryClick(event) {
   wixLocation.to(categoryData['link-categories-categoryName'])
 }
 
-export function onSearchClick(event) {
-  //Add your code for this event here:
+export const showSearchResults = () => {
+  const searchValue = $w('#searchInput').value
+  if (!searchValue) {
+    return
+  }
+
+  wixLocation.to(`/categories/search?query=${searchValue}`)
 }

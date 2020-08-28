@@ -78,5 +78,5 @@ export const saveAndNavigate = path => {
   setTimeout(async () => {
     await $w('#orderConnection').save()
     wixLocation.to(path)
-  }, 200)
+  }, 100)
 }

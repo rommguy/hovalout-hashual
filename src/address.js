@@ -6,8 +6,8 @@ $w.onReady(async () => {
   await $w('#orderConnection').setFilter(wixData.filter().eq('_id', userRecord._id))
 })
 
-export const goToAddress = () => {
-  saveAndNavigate('/address')
+export const goToPersonalInfo = () => {
+  saveAndNavigate('/personal-info')
 }
 
 export const backToCart = () => {
