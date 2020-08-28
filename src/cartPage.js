@@ -8,7 +8,7 @@ $w.onReady(async () => {
   $w('#cartRepeater').onItemReady(($item, itemData) => {
     $item('#categoryTitle').text = itemData.category
     $item('#categoryItems').text = itemData.itemsList
-      .map(nameAndAmount => {
+      .map((nameAndAmount) => {
         if (nameAndAmount.amount >= 2) {
           return `${nameAndAmount.amount} X ${nameAndAmount.name}`
         }
@@ -17,7 +17,7 @@ $w.onReady(async () => {
       .join('\n')
   })
   const itemIds = Object.keys(userRecord.orderItems)
-  const categoryIds = Object.values(userRecord.orderItems).map(orderItem => orderItem.categoryId)
+  const categoryIds = Object.values(userRecord.orderItems).map((orderItem) => orderItem.categoryId)
   const categoriesNames = {}
   for (const categoryId of categoryIds) {
     const categoryRecord = await wixData.get('categories', categoryId)

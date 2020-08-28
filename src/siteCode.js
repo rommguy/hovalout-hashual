@@ -3,7 +3,7 @@ import wixData from 'wix-data'
 import wixWindow from 'wix-window'
 import { getRandomAlpahNumericString } from 'public/utils.js'
 
-const getEmptyUserOrder = userId => {
+const getEmptyUserOrder = (userId) => {
   return {
     orderItems: {},
     email: '',

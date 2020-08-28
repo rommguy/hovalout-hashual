@@ -1,8 +1,9 @@
 import { onUpdateItem, getCurrentItemAmount } from 'public/itemInteractions.js'
 import wixLocation from 'wix-location'
+import wixData from 'wix-data'
 
 const updateCounters = () => {
-  $w('#itemsRepeater').forEachItem(async $item => {
+  $w('#itemsRepeater').forEachItem(async ($item) => {
     const itemData = $item('#categoryItems').getCurrentItem()
     if (itemData) {
       const itemAmount = await getCurrentItemAmount(itemData._id)
@@ -11,7 +12,25 @@ const updateCounters = () => {
   })
 }
 
-$w.onReady(() => {
+const setSearchResults = async (searchQuery) => {
+  $w('#searchQuery').text = `תוצאות חיפוש עבור ״${searchQuery}״`
+  return $w('#categoryItems').setFilter(wixData.filter().contains('title', searchQuery))
+}
+
+const isInSearch = () => wixLocation.path.includes('search')
+
+const initSearch = async () => {
+  const searchQueryElm = $w('#searchQuery')
+  const searchQuery = wixLocation.query['query']
+  if (isInSearch() && searchQuery) {
+    await $w('#categoryTitle').collapse()
+    await setSearchResults(searchQuery)
+  } else {
+    await searchQueryElm.collapse()
+  }
+}
+
+$w.onReady(async () => {
   $w('#itemsRepeater').onItemReady(async ($item, itemData, index) => {
     const itemAmount = await getCurrentItemAmount(itemData._id)
     console.log(`item: ${JSON.stringify(itemData)}, itemID: ${itemData._id}, amount: ${itemAmount}`)
@@ -25,11 +44,12 @@ $w.onReady(() => {
         'wix:image://v1/0548d91df03c46a6b89f02f49ae8be98.jpg/Boat%20on%20a%20Lake.jpg#originWidth=3000&originHeight=2790'
     }
   })
+  await initSearch()
   updateCounters()
 })
 
-const addOne = x => x + 1
-const removeOne = x => x - 1
+const addOne = (x) => x + 1
+const removeOne = (x) => x - 1
 
 const updateItemAmount = async (event, amountHandler) => {
   const repeaterSelector = $w.at(event.context)
@@ -56,11 +76,21 @@ export function onCategoryClick(event) {
   wixLocation.to(categoryData['link-categories-categoryName'])
 }
 
-export const showSearchResults = () => {
+export const onSearchInputKey = (event) => {
+  if (event.key === 'Enter') {
+    showSearchResults()
+  }
+}
+
+export const showSearchResults = async () => {
   const searchValue = $w('#searchInput').value
   if (!searchValue) {
     return
   }
 
+  const currentlyInSearch = isInSearch()
   wixLocation.to(`/categories/search?query=${searchValue}`)
+  if (currentlyInSearch) {
+    await setSearchResults(searchValue)
+  }
 }

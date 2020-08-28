@@ -2,7 +2,7 @@ import { reducer, setItemAmountAction, getUserRecord } from 'public/utils.js'
 import wixData from 'wix-data'
 import { local } from 'wix-storage'
 
-export const getCurrentItemAmount = async itemId => {
+export const getCurrentItemAmount = async (itemId) => {
   const userId = local.getItem('userId')
   const userRecord = await wixData.get('orders', userId)
   const orderItems = userRecord.orderItems

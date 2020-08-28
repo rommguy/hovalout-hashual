@@ -16,7 +16,7 @@ export function add_item(param1, param2) {
   return param1 + param2
 }
 
-export const getRandomAlpahNumericString = length => {
+export const getRandomAlpahNumericString = (length) => {
   const numArray = [...Array(length).keys()]
   return numArray.map(() => ALPHA_NUMERIC_CHARS[Math.floor(Math.random() * ALPHA_NUMERIC_CHARS.length)]).join('')
 }
@@ -74,7 +74,7 @@ export const goToCategories = async () => {
   }, 200)
 }
 
-export const saveAndNavigate = path => {
+export const saveAndNavigate = (path) => {
   setTimeout(async () => {
     await $w('#orderConnection').save()
     wixLocation.to(path)
