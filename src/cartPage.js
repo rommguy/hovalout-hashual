@@ -1,6 +1,5 @@
-import { getUserRecord, debounce, goToCategories, saveAndNavigate } from 'public/utils.js'
+import { getUserRecord, goToCategories, saveAndNavigate } from 'public/utils.js'
 import wixData from 'wix-data'
-import wixLocation from 'wix-location'
 let pageReady = false
 
 $w.onReady(async () => {
@@ -47,7 +46,6 @@ $w.onReady(async () => {
   }, {})
 
   $w('#cartRepeater').data = Object.values(itemsPerCategoryMap)
-  console.log(`Setting filter for _id to eq ${userRecord._id}`)
   await $w('#orderConnection').setFilter(wixData.filter().eq('_id', userRecord._id))
 
   $w('#orderConnection').onReady(async () => {

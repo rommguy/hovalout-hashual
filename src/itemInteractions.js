@@ -1,19 +1,41 @@
-import { reducer, setItemAmountAction, getUserRecord } from 'public/utils.js'
+import { reducer, setItemAmountAction, getUserRecord, debounce } from 'public/utils.js'
 import wixData from 'wix-data'
-import { local } from 'wix-storage'
+import { local, memory } from 'wix-storage'
 
-export const getCurrentItemAmount = async (itemId) => {
-  const userId = local.getItem('userId')
-  const userRecord = await wixData.get('orders', userId)
-  const orderItems = userRecord.orderItems
-  return orderItems[itemId] ? orderItems[itemId].amount : 0
+const getLocalOrderItems = () => {
+  const orderItemsString = memory.getItem('orderItems')
+  if (orderItemsString) {
+    return JSON.parse(orderItemsString)
+  }
+  return {}
 }
 
-export const onUpdateItem = async (itemId, newAmount, itemTitle, itemCateogry) => {
+export const getCurrentItemAmount = async (itemId) => {
+  const orderItems = getLocalOrderItems()
+  if (orderItems) {
+    return orderItems[itemId] ? orderItems[itemId].amount : 0
+  }
+  const userId = local.getItem('userId')
+  const userRecord = await wixData.get('orders', userId)
+  const remoteOrderItems = userRecord.orderItems
+  return remoteOrderItems[itemId] ? remoteOrderItems[itemId].amount : 0
+}
+
+export const setOrderItems = (remoteOrderItems) => {
+  memory.setItem('orderItems', JSON.stringify(remoteOrderItems))
+}
+
+const updateOrderItemsInDB = debounce(async () => {
+  const orderItems = getLocalOrderItems()
   const userRecord = await getUserRecord()
-  const orderItems = userRecord.orderItems
+  userRecord.orderItems = orderItems
+  await wixData.update('orders', userRecord)
+}, 250)
+
+export const onUpdateItem = (itemId, newAmount, itemTitle, itemCateogry) => {
+  const orderItems = getLocalOrderItems()
   const action = setItemAmountAction(itemTitle, itemId, newAmount, itemCateogry)
   const updatedOrderItems = reducer(orderItems, action)
-  userRecord.orderItems = updatedOrderItems
-  await wixData.update('orders', userRecord)
+  setOrderItems(updatedOrderItems)
+  updateOrderItemsInDB()
 }

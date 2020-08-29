@@ -33,7 +33,6 @@ const initSearch = async () => {
 $w.onReady(async () => {
   $w('#itemsRepeater').onItemReady(async ($item, itemData, index) => {
     const itemAmount = await getCurrentItemAmount(itemData._id)
-    console.log(`item: ${JSON.stringify(itemData)}, itemID: ${itemData._id}, amount: ${itemAmount}`)
     $item('#itemCounter').value = itemAmount
   })
   $w('#categoriesRepeater').onItemReady(($item, categoryData) => {

@@ -1,6 +1,7 @@
 import { local } from 'wix-storage'
 import wixData from 'wix-data'
 import wixWindow from 'wix-window'
+import { setOrderItems } from 'public/itemInteractions.js'
 import { getRandomAlpahNumericString } from 'public/utils.js'
 
 const getEmptyUserOrder = (userId) => {
@@ -25,5 +26,8 @@ $w.onReady(async () => {
   const userOrderDetails = await wixData.get('orders', userId)
   if (!userOrderDetails) {
     await wixData.insert('orders', getEmptyUserOrder(userId))
+    setOrderItems({})
+  } else {
+    setOrderItems(userOrderDetails.orderItems)
   }
 })

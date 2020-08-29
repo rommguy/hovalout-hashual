@@ -40,7 +40,7 @@ const setItemAmount = (orderItems, id, title, amount, categoryId) => {
   return updatedState
 }
 
-export const reducer = (orderItems, action) => {
+export const reducer = (orderItems = {}, action) => {
   switch (action.type) {
     case SET_ITEM_AMOUNT_TYPE:
       return setItemAmount(orderItems, action.id, action.title, action.amount, action.categoryId)
