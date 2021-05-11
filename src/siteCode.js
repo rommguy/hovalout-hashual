@@ -23,6 +23,7 @@ $w.onReady(async () => {
   if (!existingUserId) {
     local.setItem('userId', userId)
   }
+  // TODO Guy Romm 29/08/2020: check is order was sent, if it was - new id and new order
   const userOrderDetails = await wixData.get('orders', userId)
   if (!userOrderDetails) {
     await wixData.insert('orders', getEmptyUserOrder(userId))

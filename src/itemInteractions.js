@@ -1,5 +1,5 @@
-import { reducer, setItemAmountAction, getUserRecord, debounce } from 'public/utils.js'
 import wixData from 'wix-data'
+import { reducer, setItemAmountAction, getUserRecord, debounce } from 'public/utils.js'
 import { local, memory } from 'wix-storage'
 
 const getLocalOrderItems = () => {
@@ -15,8 +15,7 @@ export const getCurrentItemAmount = async (itemId) => {
   if (orderItems) {
     return orderItems[itemId] ? orderItems[itemId].amount : 0
   }
-  const userId = local.getItem('userId')
-  const userRecord = await wixData.get('orders', userId)
+  const userRecord = await getUserRecord()
   const remoteOrderItems = userRecord.orderItems
   return remoteOrderItems[itemId] ? remoteOrderItems[itemId].amount : 0
 }
